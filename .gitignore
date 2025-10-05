@@ -1,0 +1,11 @@
+# Python/Conda
+__pycache__/
+*.pyc
+.DS_Store
+
+# Conda env folders (if ever created locally in project)
+env/
+.conda/
+.venv/
+# Plots or build artifacts
+plots/
