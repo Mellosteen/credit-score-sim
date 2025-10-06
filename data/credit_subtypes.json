@@ -1,0 +1,19 @@
+{
+    "schema_version": 1,
+    "categories": {
+      "revolving": [
+        "credit_card", "charge_card", "store_card", "secured_credit_card",
+        "personal_line_of_credit", "heloc"
+      ],
+      "installment": [
+        "auto_loan", "personal_loan", "student_loan",
+        "debt_consolidation_loan", "motorcycle_loan"
+      ],
+      "mortgage": [
+        "first_mortgage", "second_mortgage", "home_equity_loan", "construction_loan"
+      ],
+      "retail": [
+        "department_store_card", "electronics_financing"
+      ]
+    }
+  }
