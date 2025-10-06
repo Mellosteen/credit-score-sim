@@ -1,4 +1,4 @@
-# Credit Score Simulator (v0)
+# Credit Score Simulator (v1)
 
 Tiny starter that computes a toy "credit score" from:
 - on-time payment rate (0..1)
