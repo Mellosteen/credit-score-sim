@@ -3,6 +3,9 @@
 Tiny starter that computes a toy "credit score" from:
 - on-time payment rate (0..1)
 - utilization (0..1)
+- average age in months (0..240), but at least 72 for high score
+- recent inquiries (0..5)
+- credit mix score (0..1)
 
 ## Quickstart
 

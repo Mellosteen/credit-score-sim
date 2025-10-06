@@ -24,7 +24,7 @@ class Factors:
     """
     on_time_payment_rate: float  # 0..1, last 24 months
     utilization: float           # 0..1
-    avg_account_age_months: int  # 1..240 months
+    avg_account_age_months: int  # 1..240 months, but only 72 needed for max weight
     recent_inquiries: int        # 0..5, # of hard inquiries only
     mix_score: float             # 0..1, 0 = all one type/1 = healthy mix
 
