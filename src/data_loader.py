@@ -3,6 +3,10 @@ from functools import lru_cache
 from pathlib import Path
 import json
 
+    # !!! THIS FILE IS CURRENTLY NO LONGER ACTIVE AND WILL BE CHANGED FOR USE IN THE FUTURE!!!
+    # THE DATA FOLDER WILL ALSO BE KEPT IN THIS STATE UNTIL FURTHER WORK HAS BEEN COMPLETED
+
+
 MAIN_CATEGORIES = {"revolving", "installment", "mortgage", "retail"}
 
 def _project_root() -> Path:
