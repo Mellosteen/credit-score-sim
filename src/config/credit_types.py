@@ -1,14 +1,14 @@
-# Path src/confing/credit_types.py
+# Path src/config/credit_types.py
 
-MAIN_TYPES = {"revolving", "installment", "mortgage", "retail", "other"}
+MAIN_TYPES = {"revolving", "installment", "open", "other"}
 
 SUB_TO_MAIN_MAP = {
     # Revolving credit subtypes
     "credit_card": "revolving",
-    "charge_card": "revolving",
     "store_card": "revolving",
     "secured_credit_card": "revolving",
     "personal_line_of_credit": "revolving",
+    "department_store_card": "revolving",
     "heloc": "revolving",
 
     # Installment credit subtypes 
@@ -17,16 +17,13 @@ SUB_TO_MAIN_MAP = {
     "student_loan": "installment",
     "debt_consolidation_loan": "installment",
     "motorcycle_loan": "installment",
+    "first_mortgage": "installment",
+    "second_mortgage": "installment",
+    "home_equity_loan": "installment",
+    "construction_loan": "installment",
 
-    # Mortgage credit subtypes
-    "first_mortgage": "mortgage",
-    "second_mortgage": "mortgage",
-    "home_equity_loan": "mortgage",
-    "construction_loan": "mortgage",
-
-    # Retail credit subtypes
-    "department_store_card": "retail",
-    "electronics_financing": "retail",
+    # Open credit subtypes
+    "charge_card": "open",
 
     # All other unlisted types will be placed under other for now...
 }
@@ -40,137 +37,145 @@ CREDIT_TYPES = {
 
     # !!! Keys with only types marked with hints as values need to be changed!!!
 
-    
+    # Begin revolving credit dict
     "revolving": {
         "defaults": {
+            "include_utilization": True,
+            "has_limit": True,
+            "required_full_pay": False,
             "apr_annual": 0.24,
             "is_open": True,
             "is_reported": True,
-            "grace_period": 25,
+            "grace_period_days": 25,
             "min_payment_rule": {"fixed": 25, "pct": 0.02},
             "late_fee": 35,  
         },
+
         "subtypes": {
             "credit_card": {
                 "limit": 2000,
                 "balance": 0.0,
-            },
-            "charge_card": {
-                "min_payment_rule": {"fixed": 0, "pct": 1.0}
             },
             "store_card": {
                 "apr_annual": 0.29,
                 "limit": 1000,
                 "balance": 0.0,
             },
-            "secured_card": {
+            "secured_credit_card": {
                 "deposit": 300,
                 "limit": 300,
                 "balance": 0.0,
             },    
             "personal_line_of_credit": {
-                "draw_limit": 5000,
+                "limit": 5000,
                 "balance": 0.0,
             },  
-        },
-    },      # End revolving credit dict
-
-    "installment": {
-        "defaults": {
-            "apr_annual": 0.06,
-            "is_open": True,
-            "is_reported": True,
-            "amortization": "fixed",
-            "compounding": "monthly",
-            "late_fee": float,
-        },
-
-        "subtypes": {
-            "auto_loan": {
-                "original_principle": 15000,
-                "term_months": 60,
-                "collateral": "vehicle",
-            },
-            "personal_loan": {
-                "original_principle": 5000,
-                "term_months": 36,
-                "apr_annual": 0.11,
-            },
-            "student_loan": {
-                "original_principle": 12000,
-                "term_months": 120,
-                "apr_annual": float,
-                "deferred_allowed": True,
-            },
-            "debt_consolidation_loan": {
-                "original_principle": 10000,
-                "term_months": 48,
-            },
-            "motorcycle": {
-                "original_principle": 8000,
-                "term_months": 48,
-                "collateral": "vehicle",
-            }
-        }
-    },      # End installment credit dict
-
-    "mortgage": {
-        "defaults": {
-            "apr_annual": 0.045,
-            "is_open": True,
-            "is_reported": True,
-            "term_months": 360,
-            "amortization": "fixed",
-            "escrow": True,
-        },
-
-        "subtypes": {
-            "first_mortgage": {
-                "original_principle": 250000,
-            },
-            "second_mortgage": {
-                "original_principle": 30000,
-                "term_months": 180,
-                "apr_annual": 0.06,
-            },
-            "home_equity_loan": {
-                "original_principle": 40000,
-                "term_months": 120,
-            },
-            "construction_loan": {
-                "term_months": 12,
-                "interest_only": True,
-            }
-        }
-    },      # End mortgage credit dict
-
-    "retail": {
-        "defaults": {
-            "apr_annual": 0.28,
-            "is_open": True,
-            "is_reported": True,
-        },
-
-        "subtypes": {
             "department_store_card": {
                 "min_payment_rule": {"fixed": 20, "pct": 0.04},
                 "limit": 1000,
                 "balance": 0.0,
             },
-            "electronics_financing": {
-                "promo_no_interest_months": 12,
-                "deferred_interest": True,
-                "original_principle": 1500,
-                "term_months": 24,
+            "heloc": {
+                "apr_annual": 0.09,
+                "limit": 50000,
+                "variable_rate": True,
+                "draw_period_months": 120,
             }
-        }
-    },      # End retail credit dict
+        },
+    },      # End revolving credit dict
 
+    # Begin installment credit dict
+    "installment": {
+        "defaults": {
+            "include_utilization": False,
+            "has_limit": False,
+            "required_full_pay": False,
+            "apr_annual": 0.06,
+            "is_open": True,
+            "is_reported": True,
+            "amortization": "fixed",
+            "compounding": "monthly",
+            "late_fee": 35,     # May require adjustment/overrides later
+        },
+
+        "subtypes": {
+            "auto_loan": {
+                "original_principal": 15000,
+                "term_months": 60,
+                "collateral": "vehicle",
+            },
+            "personal_loan": {
+                "original_principal": 5000,
+                "term_months": 36,
+                "apr_annual": 0.11,
+            },
+            "student_loan": {
+                "original_principal": 12000,
+                "term_months": 120,
+                "apr_annual": 0.065,
+                "deferment_allowed": True,
+            },
+            "debt_consolidation_loan": {
+                "original_principal": 10000,
+                "term_months": 48,
+            },
+            "motorcycle_loan": {
+                "original_principal": 8000,
+                "term_months": 48,
+                "collateral": "vehicle",
+            },
+
+            # Mortgage type installments
+            "first_mortgage": {
+                "original_principal": 250000,
+                "term_months": 360,
+                "apr_annual": 0.045,
+            },
+            "second_mortgage": {
+                "original_principal": 30000,
+                "term_months": 180,
+                "apr_annual": 0.06,
+            },
+            "home_equity_loan": {
+                "original_principal": 40000,
+                "term_months": 120,
+                "apr_annual": 0.07,
+            },
+            "construction_loan": {
+                "original_principal": 150000,
+                "term_months": 12,
+                "interest_only": True,
+                "apr_annual": 0.08,
+            },
+        }
+    },      # End installment credit dict
+
+    # Begin open credit dict
+    "open": {
+        "defaults": {
+            "required_full_pay": True,
+            "include_utilization": False,
+            "has_limit": False,
+            "is_open": True,
+            "is_reported": True,
+            "grace_period_days": 25,
+            "late_fee": 35,
+        },
+
+        "subtypes": {
+            "charge_card": {    },  # required_full_pay = True, so no min_payment_rule is not needed.
+        },
+    },
+
+    # Begin other credit dict
     "other": {
         "defaults": {
+            "include_utilization": False,
+            "has_limit": False,
+            "required_full_pay": False,
             "apr_annual": 0.1,
             "is_open": True,
             "is_reported": True,
-        }
+        },
     },      # End other credit dict
 }       
